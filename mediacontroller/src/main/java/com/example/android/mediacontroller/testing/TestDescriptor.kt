@@ -42,7 +42,7 @@ class TestDescriptor {
             context.getString(R.string.play_search_test_desc),
             TestResult.NONE,
             Test.NO_LOGS,
-            false
+            true
         ) { query, callback, testId ->
             runPlayFromSearchTest(
                 testId, query, mediaController, callback
