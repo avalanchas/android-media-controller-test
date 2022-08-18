@@ -12,8 +12,10 @@ class TestDescriptor {
     var testList: List<TestOptionDetails>? = null
     var testSuites: List<MediaAppTestSuite>? = null
 
-    fun setupTests(context: Context, mediaController: MediaControllerCompat,
-                   mediaAppDetails: MediaAppDetails?, mediaBrowser: MediaBrowserCompat?) {
+    fun setupTests(
+        context: Context, mediaController: MediaControllerCompat,
+        mediaAppDetails: MediaAppDetails?, mediaBrowser: MediaBrowserCompat?,
+    ) {
 
         /**
          * Tests the play() transport control. The test can start in any state, might enter a
@@ -296,7 +298,7 @@ class TestDescriptor {
         }
 
         val initialPlaybackStateTest = TestOptionDetails(
-            -1,
+            15,
             context.getString(R.string.playback_state_test_title),
             context.getString(R.string.playback_state_test_desc),
             TestResult.NONE,
@@ -386,12 +388,12 @@ class TestDescriptor {
         )
 
         val commonTests = arrayOf(
+            initialPlaybackStateTest,
             browseTreeDepthTest,
             mediaArtworkTest,
             //TODO FIX contentStyleTest,
             customActionIconTypeTest,
             //TODO: FIX supportsSearchTest,
-            initialPlaybackStateTest
         )
 
         val automotiveTests = arrayOf(
@@ -407,15 +409,19 @@ class TestDescriptor {
         val basicTestSuite = MediaAppTestSuite("Basic Tests", "Basic media tests.", basicTests)
         testSuites.add(basicTestSuite)
         if (mediaAppDetails?.supportsAuto == true || mediaAppDetails?.supportsAutomotive == true) {
-            testList += commonTests
-            val autoTestSuite = MediaAppTestSuite("Auto Tests",
-                "Includes support for android auto tests.", testList)
+            testList = commonTests + testList
+            val autoTestSuite = MediaAppTestSuite(
+                "Auto Tests",
+                "Includes support for android auto tests.", testList
+            )
             testSuites.add(autoTestSuite)
         }
         if (mediaAppDetails?.supportsAutomotive == true) {
             testList += automotiveTests
-            val automotiveTestSuite = MediaAppTestSuite("Automotive Tests",
-                "Includes support for Android automotive tests.", testList)
+            val automotiveTestSuite = MediaAppTestSuite(
+                "Automotive Tests",
+                "Includes support for Android automotive tests.", testList
+            )
             testSuites.add(automotiveTestSuite)
         }
         this.testList = testList.asList()
